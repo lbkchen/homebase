@@ -10,7 +10,14 @@ const Home = () => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
-    <Nav />
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">Hero title</h1>
+          <h2 class="subtitle">Hero subtitle</h2>
+        </div>
+      </div>
+    </section>
 
     <div className="hero">
       <div class="buttons">
