@@ -8,6 +8,8 @@ verify_ssl = true
 [packages]
 django = "*"
 django-environ = "*"
+requests = "*"
+praw = "*"
 
 [requires]
 python_version = "3.7"
