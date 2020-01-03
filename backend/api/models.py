@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
+class JournalEntry(models.Model):
+    timestamp = models.BigIntegerField()
+    text = models.TextField()
