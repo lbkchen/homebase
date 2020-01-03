@@ -14,7 +14,7 @@ python manage.py runserver
 Run NextJS React client on http://localhost:3000
 
 ```
-yarn dev
+npm run dev
 ```
 
 ## Deploy
