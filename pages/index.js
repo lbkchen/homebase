@@ -1,7 +1,16 @@
 import React from "react";
 import Head from "next/head";
+
 import Nav from "../components/nav";
+import RedditPosts from "../components/reddit";
+import API from "../utils/api";
+
 import "../styles/styles.sass";
+
+async function getRedditPosts() {
+  const posts = await API.listRedditPosts();
+  console.log(posts);
+}
 
 const Home = () => (
   <div>
@@ -10,34 +19,74 @@ const Home = () => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
-    <section class="hero">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title">Hero title</h1>
-          <h2 class="subtitle">Hero subtitle</h2>
+    <section className="hero">
+      <div className="hero-body main-banner">
+        <div className="greeting-container">
+          <div className="greeting">Hello, Ken.</div>
+          <div className="greeting-date">Today's date</div>
+        </div>
+      </div>
+    </section>
+
+    <section className="section hero">
+      <div className="hero-body">
+        <div className="container">
+          <h1 className="title">Reddit</h1>
+          <RedditPosts />
         </div>
       </div>
     </section>
 
     <div className="hero">
-      <div class="buttons">
-        <button class="button is-primary">Primary</button>
-        <button class="button is-link">Link</button>
+      <div className="buttons">
+        <button className="button is-primary">Primary</button>
+        <button className="button is-link">Link</button>
       </div>
 
-      <div class="buttons">
-        <button class="button is-info is-light">Info</button>
-        <button class="button is-success is-light">Success</button>
-        <button class="button is-warning is-light">Warning</button>
-        <button class="button is-danger is-light">Danger</button>
+      <div className="buttons">
+        <button className="button is-info is-light">Info</button>
+        <button className="button is-success is-light">Success</button>
+        <button className="button is-warning is-light">Warning</button>
+        <button className="button is-danger is-light">Danger</button>
       </div>
     </div>
 
     <style jsx>{`
-      .hero {
-        width: 100%;
-        color: #333;
+      .main-banner {
+        position: relative;
+        background-image: url("/images/tree-wallpaper.jpg");
+        height: 400px;
+        background-position: center bottom;
+        background-repeat: no-repeat;
+        background-size: cover;
+        box-shadow: inset 0 -24px 24px 0px white;
       }
+
+      .greeting-container {
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: black;
+        font-size: 18px;
+        font-weight: 300;
+        padding: 24px 48px;
+        text-align: center;
+        background-color: white;
+        border-top-right-radius: 36px;
+        border-top-left-radius: 36px;
+        box-shadow: 0 0 24px 24px white;
+      }
+
+      .greeting {
+        font-weight: 600;
+      }
+
+      .greeting-date {
+        font-weight: 300;
+        font-size: 24px;
+      }
+
       .title {
         margin: 0;
         width: 100%;
