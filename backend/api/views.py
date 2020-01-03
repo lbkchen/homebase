@@ -38,7 +38,6 @@ def reddit_posts(request):
     reddit = praw.Reddit(client_id=env('REDDIT_CLIENT_ID'), client_secret=env('REDDIT_CLIENT_SECRET'),
                          password=env('REDDIT_PASSWORD'), user_agent='Personal Scraper (by u/kan-api)',
                          username=env('REDDIT_USERNAME'))
-    user = reddit.user.me()
 
     # Most recent sales from frugalmalefashion
     post_regexes = [
