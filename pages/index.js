@@ -2,38 +2,52 @@ import React from "react";
 import Head from "next/head";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
 import {
-  faCoffee,
-  faNewspaper,
-  faLaptop,
-} from "@fortawesome/free-solid-svg-icons";
-import { faProductHunt } from "@fortawesome/free-brands-svg-icons";
+  faProductHunt,
+  faHackerNews,
+} from "@fortawesome/free-brands-svg-icons";
 
-import Nav from "../components/nav";
 import RedditPosts from "../components/reddit";
-
-import API from "../utils/api";
 
 import "../styles/styles.sass";
 
 class Home extends React.Component {
   renderNewsMenu() {
     return (
-      <div className="panel">
+      <div className="panel is-info">
         <p className="panel-heading">News</p>
-        <a className="panel-block">
+        <a className="panel-block" href="https://www.bbc.com/" target="_blank">
+          <span className="panel-icon">
+            <FontAwesomeIcon icon={faNewspaper} />
+          </span>
+          BBC News
+        </a>
+        <a
+          className="panel-block"
+          href="https://www.nytimes.com/"
+          target="_blank"
+        >
           <span className="panel-icon">
             <FontAwesomeIcon icon={faNewspaper} />
           </span>
           New York Times
         </a>
-        <a className="panel-block">
+        <a
+          className="panel-block"
+          href="https://news.ycombinator.com/"
+          target="_blank"
+        >
           <span className="panel-icon">
-            <FontAwesomeIcon icon={faLaptop} />
+            <FontAwesomeIcon icon={faHackerNews} />
           </span>
           Hacker News
         </a>
-        <a className="panel-block">
+        <a
+          className="panel-block"
+          href="https://www.producthunt.com/"
+          target="_blank"
+        >
           <span className="panel-icon">
             <FontAwesomeIcon icon={faProductHunt} />
           </span>
