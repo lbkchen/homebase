@@ -11,6 +11,7 @@ django-environ = "*"
 requests = "*"
 praw = "*"
 django-cors-headers = "*"
+pylint-django = "*"
 
 [requires]
 python_version = "3.7"
