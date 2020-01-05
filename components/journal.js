@@ -1,7 +1,11 @@
 import React from "react";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTshirt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTshirt,
+  faPenFancy,
+  faFeatherAlt,
+} from "@fortawesome/free-solid-svg-icons";
 
 import API from "../utils/api";
 
@@ -12,146 +16,81 @@ class Journal extends React.Component {
     super(props);
 
     this.state = {
-      toggledOnce: false,
       isOpen: false,
     };
   }
 
   handleToggleOpen = () => {
-    const { onToggleOpenJournal } = this.props;
     const newState = !this.state.isOpen;
-    onToggleOpenJournal && onToggleOpenJournal(newState);
-    this.setState({ isOpen: newState, toggledOnce: true });
+    this.setState({ isOpen: newState });
   };
 
   render() {
     return (
       <div
         className={`${classNames("journal", {
-          "journal--expanded": this.state.isOpen,
+          "journal--isOpen": this.state.isOpen,
         })}`}
       >
-        <div className="journal-line journal-topLine">
-          <div className="journal-badge" onClick={this.handleToggleOpen}></div>
+        <div className="journal-badge" onClick={this.handleToggleOpen}>
+          <FontAwesomeIcon icon={faFeatherAlt} />
         </div>
 
-        <div
-          className={`${classNames("journal-line journal-bottomLine ", {
-            "journal-bottomLine--initialState": !this.state.toggledOnce,
-            "journal-bottomLine--isOpen": this.state.isOpen,
-          })}`}
-        >
-          <div
-            className={`${classNames("journal-contents", {
-              "journal-contents--initialState": !this.state.toggledOnce,
-              "journal-contents--isOpen": this.state.isOpen,
-            })}`}
-          >
-            Hey this is the one
-          </div>
-        </div>
-
-        <style jsx>{`
-          .journal {
-            position: relative;
-            width: 100%;
-            height: 2px;
-          }
-
-          .journal-badge {
-            position: absolute;
-            top: 0px;
-            left: 50%;
-            height: 24px;
-            width: 24px;
-            border: 1px solid #dbdbdb;
-            border-radius: 50%;
-            background-color: #ffffff;
-            transform: translate(-50%, -50%);
-            z-index: 999;
-          }
-
-          .journal-line {
-            background-color: #ededed;
-            height: 1px;
-            width: 100%;
-          }
-
-          .journal-bottomLine {
-            will-change: transform;
-            transform-origin: top;
-            animation-duration: 300ms;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards;
-
-            animation-name: journalBottomLineClose;
-          }
-
-          .journal-bottomLine--initialState {
-            animation-name: none;
-          }
-
-          .journal-bottomLine--isOpen {
-            animation-name: journalBottomLineOpen;
-          }
-
-          .journal-contents {
-            will-change: transform;
-            height: 100%;
-
-            transform-origin: top;
-            animation-duration: 300ms;
-            animation-delay: -300ms;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards;
-
-            animation-name: journalContentsClose;
-          }
-
-          .journal-contents--initialState {
-            animation-name: none;
-          }
-
-          .journal-contents--isOpen {
-            animation-name: journalContentsOpen;
-          }
-
-          @keyframes journalBottomLineOpen {
-            0% {
-              transform: scaleY(1);
+        <style jsx>
+          {`
+            .journal {
+              position: relative;
+              width: 100%;
+              height: 2px;
+              border-radius: 1px;
+              transition: height 0.5s ease, border-radius 0.5s ease;
+              background-color: #ededed;
             }
-            100% {
-              transform: scaleY(200);
-            }
-          }
 
-          @keyframes journalBottomLineClose {
-            0% {
-              transform: scaleY(200);
+            .journal--isOpen {
+              border-radius: 5px;
+              height: 200px;
             }
-            100% {
-              transform: scaleY(1);
-            }
-          }
 
-          @keyframes journalContentsOpen {
-            0% {
-              transform: scaleY(1);
+            .journal::after {
+              content: "";
+              position: absolute;
+              z-index: -1;
+              width: 100%;
+              height: 100%;
+              opacity: 0;
+              border-radius: 5px;
+              box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
+                0 0px 0 1px rgba(10, 10, 10, 0.02);
             }
-            100% {
-              transform: scaleY(0.005);
-            }
-          }
 
-          @keyframes journalContentsClose {
-            0% {
-              transform: scaleY(0.005);
+            .journal--isOpen::after {
+              opacity: 1;
             }
-            100% {
-              transform: scaleY(1);
+
+            .journal-badge {
+              position: absolute;
+              top: 1px;
+              left: 50%;
+              height: 24px;
+              width: 24px;
+              border: 1px solid #dbdbdb;
+              border-radius: 50%;
+              background-color: #ffffff;
+              color: #dbdbdb;
+              padding: 5px;
+              font-size: 10px;
+              transform: translate(-50%, -50%);
+              z-index: 999;
             }
-          }
-        `}</style>
+
+            .journal-badge:hover {
+              border: 1px solid #b8b8b8;
+              color: #b8b8b8;
+              cursor: pointer;
+            }
+          `}
+        </style>
       </div>
     );
   }

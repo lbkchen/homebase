@@ -18,15 +18,8 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      journalToggledOnce: false,
-      journalIsOpen: false,
-    };
+    this.state = {};
   }
-
-  handleSetJournalIsOpen = isOpen => {
-    this.setState({ journalIsOpen: isOpen, journalToggledOnce: true });
-  };
 
   renderNewsMenu() {
     return (
@@ -104,7 +97,7 @@ class Home extends React.Component {
         {/* Journal */}
 
         <section className="section container">
-          <Journal onToggleOpenJournal={this.handleSetJournalIsOpen} />
+          <Journal />
         </section>
 
         {/* Modular Body Content */}
