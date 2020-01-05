@@ -1,5 +1,6 @@
 import React from "react";
 import Head from "next/head";
+import classNames from "classnames";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
@@ -9,14 +10,38 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 
 import RedditPosts from "../components/reddit";
+import Journal from "../components/journal";
 
 import "../styles/styles.sass";
 
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      journalToggledOnce: false,
+      journalIsOpen: false,
+    };
+  }
+
+  handleSetJournalIsOpen = isOpen => {
+    this.setState({ journalIsOpen: isOpen, journalToggledOnce: true });
+  };
+
   renderNewsMenu() {
     return (
       <div className="panel is-info">
         <p className="panel-heading">News</p>
+        <a
+          className="panel-block"
+          href="https://www.newyorker.com/"
+          target="_blank"
+        >
+          <span className="panel-icon">
+            <FontAwesomeIcon icon={faNewspaper} />
+          </span>
+          The New Yorker
+        </a>
         <a className="panel-block" href="https://www.bbc.com/" target="_blank">
           <span className="panel-icon">
             <FontAwesomeIcon icon={faNewspaper} />
@@ -65,6 +90,8 @@ class Home extends React.Component {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
+        {/* Cover Banner */}
+
         <section className="hero">
           <div className="hero-body main-banner">
             <div className="greeting-container">
@@ -74,7 +101,20 @@ class Home extends React.Component {
           </div>
         </section>
 
+        {/* Journal */}
+
         <section className="section container">
+          <Journal onToggleOpenJournal={this.handleSetJournalIsOpen} />
+        </section>
+
+        {/* Modular Body Content */}
+
+        <section
+          className={classNames("section container body-content", {
+            "body-content--initialState": !this.state.journalToggledOnce,
+            "body-content--isShifted": this.state.journalIsOpen,
+          })}
+        >
           <div className="columns">
             <div className="column">
               <RedditPosts />
@@ -132,6 +172,39 @@ class Home extends React.Component {
           .greeting-date {
             font-weight: 300;
             font-size: 24px;
+          }
+
+          .body-content {
+            animation-duration: 300ms;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards;
+            animation-name: bodyContentShiftedUp;
+          }
+
+          .journal-bottomLine--initialState {
+            animation-name: none;
+          }
+
+          .body-content--isShifted {
+            animation-name: bodyContentShiftedDown;
+          }
+
+          @keyframes bodyContentShiftedUp {
+            0% {
+              transform: translateY(300px);
+            }
+            100% {
+              transform: translateY(0px);
+            }
+          }
+
+          @keyframes bodyContentShiftedDown {
+            0% {
+              transform: translateY(0px);
+            }
+            100% {
+              transform: translateY(300px);
+            }
           }
         `}</style>
       </div>

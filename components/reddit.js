@@ -17,7 +17,6 @@ class RedditPosts extends React.Component {
 
   async componentDidMount() {
     const response = await API.listRedditPosts();
-    console.log(response);
     this.setState({ sections: response.sections });
   }
 
