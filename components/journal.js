@@ -1,11 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTshirt,
-  faPenFancy,
-  faFeatherAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFeatherAlt } from "@fortawesome/free-solid-svg-icons";
 
 import API from "../utils/api";
 
@@ -18,10 +14,33 @@ class Journal extends React.Component {
     this.state = {
       isOpen: false,
     };
+
+    this.textarea = React.createRef();
   }
+
+  componentDidMount() {
+    document.addEventListener("keydown", this.handleKeydown);
+  }
+
+  focusTextarea = () => {
+    this.textarea.current && this.textarea.current.focus();
+  };
+
+  handleKeydown = e => {
+    if (e.keyCode === 79) {
+      // "o" => Open journal when closed
+      e.preventDefault();
+      if (!this.state.isOpen) {
+        this.handleToggleOpen();
+      }
+    }
+  };
 
   handleToggleOpen = () => {
     const newState = !this.state.isOpen;
+    if (newState) {
+      this.focusTextarea();
+    }
     this.setState({ isOpen: newState });
   };
 
@@ -34,6 +53,19 @@ class Journal extends React.Component {
       >
         <div className="journal-badge" onClick={this.handleToggleOpen}>
           <FontAwesomeIcon icon={faFeatherAlt} />
+        </div>
+
+        <div
+          className={`${classNames("journal-content", {
+            "journal-content--isOpen": this.state.isOpen,
+          })}`}
+        >
+          <textarea
+            autoFocus
+            className="journal-textarea"
+            placeholder="What's on your mind?"
+            ref={this.textarea}
+          ></textarea>
         </div>
 
         <style jsx>
@@ -55,11 +87,13 @@ class Journal extends React.Component {
             .journal::after {
               content: "";
               position: absolute;
-              z-index: -1;
+              left: 0px;
+              top: 0px;
               width: 100%;
               height: 100%;
-              opacity: 0;
               border-radius: 5px;
+              z-index: -1;
+              opacity: 0;
               box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
                 0 0px 0 1px rgba(10, 10, 10, 0.02);
             }
@@ -88,6 +122,24 @@ class Journal extends React.Component {
               border: 1px solid #b8b8b8;
               color: #b8b8b8;
               cursor: pointer;
+            }
+
+            .journal-content {
+              padding: 24px;
+              opacity: 0;
+            }
+
+            .journal-content--isOpen {
+              opacity: 1;
+            }
+
+            .journal-textarea {
+              border: none;
+              outline: none;
+              resize: none;
+              width: 100%;
+              background-color: transparent;
+              font-size: 18px;
             }
           `}
         </style>
