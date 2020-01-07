@@ -1,6 +1,7 @@
 import praw
 import environ
 import re
+import json
 
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
@@ -44,11 +45,11 @@ def add_journal_entry(request):
     Returns:
       None
     """
-    print(request.POST)
-    timestamp = request.POST['timestamp']
-    text = request.POST['text']
+    body = json.loads(request.body)
+    timestamp = body['timestamp']
+    text = body['text']
     JournalEntry.objects.create(timestamp=timestamp, text=text)
-
+    return JsonResponse({})
 
 # Reddit
 
