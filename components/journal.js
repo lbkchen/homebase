@@ -29,8 +29,8 @@ class Journal extends React.Component {
   handleKeydown = e => {
     if (e.keyCode === 79) {
       // "o" => Open journal when closed
-      e.preventDefault();
       if (!this.state.isOpen) {
+        e.preventDefault();
         this.handleToggleOpen();
       }
     }
