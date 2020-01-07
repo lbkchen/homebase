@@ -1,4 +1,7 @@
 import fetch from "unfetch";
+import moment from "moment";
+
+import { getCookie } from "./cookie";
 
 // TODO: Change this
 const API_SERVER_BASE = "http://localhost:8000";
@@ -10,9 +13,21 @@ class API {
 
   // Journal Entries
 
-  static postJournalEntry() {
+  static postJournalEntry(text) {
     const path = "/api/journals";
-    return fetch(API.getUrl(path)).then(r => r.json());
+    const csrfToken = getCookie("csrftoken");
+    return fetch(API.getUrl(path), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        timestamp: moment().valueOf(),
+        text: text,
+      }),
+    }).then(r => r.json());
   }
 
   // Reddit

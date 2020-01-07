@@ -13,6 +13,7 @@ class Journal extends React.Component {
 
     this.state = {
       isOpen: false,
+      text: "",
     };
 
     this.textarea = React.createRef();
@@ -26,12 +27,28 @@ class Journal extends React.Component {
     this.textarea.current && this.textarea.current.focus();
   };
 
+  postJournal() {
+    // Clean text to submit
+    const text = this.state.text.trim();
+
+    text && API.postJournalEntry(this.state.text);
+    this.setState({ isOpen: false, text: "" });
+  }
+
   handleKeydown = e => {
-    if (e.keyCode === 79) {
-      // "o" => Open journal when closed
+    if (e.code === "KeyO") {
+      // Open journal when closed
       if (!this.state.isOpen) {
         e.preventDefault();
         this.handleToggleOpen();
+      }
+    }
+
+    if (e.code == "Enter" && (e.ctrlKey || e.metaKey)) {
+      // Cmd + Enter -- Submit journal
+      if (this.state.isOpen) {
+        e.preventDefault();
+        this.postJournal();
       }
     }
   };
@@ -42,6 +59,10 @@ class Journal extends React.Component {
       this.focusTextarea();
     }
     this.setState({ isOpen: newState });
+  };
+
+  handleChangeText = e => {
+    this.setState({ text: e.target.value });
   };
 
   render() {
@@ -64,6 +85,8 @@ class Journal extends React.Component {
             autoFocus
             className="journal-textarea"
             placeholder="What's on your mind?"
+            value={this.state.text}
+            onChange={this.handleChangeText}
             ref={this.textarea}
           ></textarea>
         </div>
