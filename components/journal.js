@@ -8,6 +8,8 @@ import API from "../utils/api";
 
 import "../styles/styles.sass";
 
+const SUBMIT_JOURNAL_TIMEOUT_MS = 3000;
+
 class Journal extends React.Component {
   constructor(props) {
     super(props);
@@ -18,6 +20,7 @@ class Journal extends React.Component {
     };
 
     this.textarea = React.createRef();
+    this.subTimer = null;
   }
 
   componentDidMount() {
@@ -29,6 +32,10 @@ class Journal extends React.Component {
       "keydown",
       this.handleKeydown
     );
+    if (this.submitTimer) {
+      clearTimeout(this.submitTimer);
+      setTimeout(this.handlePostJournal, SUBMIT_JOURNAL_TIMEOUT_MS);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -46,20 +53,20 @@ class Journal extends React.Component {
     this.textarea.current && this.textarea.current.blur();
   };
 
-  postJournal() {
+  handlePostJournal = () => {
     // Clean text to submit
     const text = this.state.text.trim();
 
     text && API.postJournalEntry(this.state.text);
     this.setState({ isOpen: false, text: "" });
-  }
+  };
 
   handleKeydown = e => {
     if (this.state.isOpen) {
       if (e.code == "Enter" && (e.ctrlKey || e.metaKey)) {
         // Cmd + Enter -- Submit journal
         e.preventDefault();
-        this.postJournal();
+        this.handlePostJournal();
       }
     } else {
       if (e.code === "KeyO" && (e.ctrlKey || e.metaKey)) {
@@ -75,7 +82,17 @@ class Journal extends React.Component {
   };
 
   handleChangeText = e => {
-    this.setState({ text: e.target.value });
+    const text = e.target.value;
+    if (text.trim()) {
+      if (this.submitTimer) {
+        clearTimeout(this.submitTimer);
+      }
+      this.submitTimer = setTimeout(
+        this.handlePostJournal,
+        SUBMIT_JOURNAL_TIMEOUT_MS
+      );
+    }
+    this.setState({ text });
   };
 
   render() {
