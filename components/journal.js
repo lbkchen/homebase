@@ -19,19 +19,25 @@ class Journal extends React.Component {
       text: "",
     };
 
+    this.journal = React.createRef();
+    this.journalContent = React.createRef();
     this.textarea = React.createRef();
+
     this.subTimer = null;
   }
 
   componentDidMount() {
-    ReactDOM.findDOMNode(this).addEventListener("keydown", this.handleKeydown);
+    const journal = this.journal.current;
+    if (journal) {
+      journal.addEventListener("keydown", this.handleKeydown);
+    }
   }
 
   componentWillUnmount() {
-    ReactDOM.findDOMNode(this).removeEventListener(
-      "keydown",
-      this.handleKeydown
-    );
+    const journal = this.journal.current;
+    if (journal) {
+      journal.removeEventListener("keydown", this.handleKeydown);
+    }
     if (this.submitTimer) {
       clearTimeout(this.submitTimer);
       setTimeout(this.handlePostJournal, SUBMIT_JOURNAL_TIMEOUT_MS);
@@ -42,6 +48,28 @@ class Journal extends React.Component {
     if (this.state.isOpen && !prevState.isOpen) {
       this.setState({ text: "" });
       this.focusTextarea();
+    }
+
+    if (this.state.text !== prevState.text) {
+      if (this.state.text.trim()) {
+        // Set timer to post journal
+        if (this.submitTimer) {
+          clearTimeout(this.submitTimer);
+        }
+        this.submitTimer = setTimeout(
+          this.handlePostJournal,
+          SUBMIT_JOURNAL_TIMEOUT_MS
+        );
+
+        // Start animating journal content opacity
+        const journalContent = this.journalContent.current;
+        if (journalContent) {
+          journalContent.style.animation = "none";
+          setTimeout(() => {
+            journalContent.style.animation = "";
+          }, 10);
+        }
+      }
     }
   }
 
@@ -83,15 +111,6 @@ class Journal extends React.Component {
 
   handleChangeText = e => {
     const text = e.target.value;
-    if (text.trim()) {
-      if (this.submitTimer) {
-        clearTimeout(this.submitTimer);
-      }
-      this.submitTimer = setTimeout(
-        this.handlePostJournal,
-        SUBMIT_JOURNAL_TIMEOUT_MS
-      );
-    }
     this.setState({ text });
   };
 
@@ -101,6 +120,7 @@ class Journal extends React.Component {
         className={`${classNames("journal", {
           "journal--isOpen": this.state.isOpen,
         })}`}
+        ref={this.journal}
       >
         <div className="journal-badge" onClick={this.handleToggleOpen}>
           <FontAwesomeIcon icon={faFeatherAlt} />
@@ -110,6 +130,7 @@ class Journal extends React.Component {
           className={`${classNames("journal-content", {
             "journal-content--isOpen": this.state.isOpen,
           })}`}
+          ref={this.journalContent}
         >
           <textarea
             autoFocus
@@ -184,6 +205,7 @@ class Journal extends React.Component {
 
             .journal-content--isOpen {
               opacity: 1;
+              animation: fadeOut 3s;
             }
 
             .journal-textarea {
@@ -193,6 +215,16 @@ class Journal extends React.Component {
               width: 100%;
               background-color: transparent;
               font-size: 18px;
+            }
+
+            @keyframes fadeOut {
+              from {
+                opacity: 1;
+              }
+
+              to {
+                opacity: 0;
+              }
             }
           `}
         </style>
