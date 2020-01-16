@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFeatherAlt } from "@fortawesome/free-solid-svg-icons";
@@ -20,11 +21,29 @@ class Journal extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener("keydown", this.handleKeydown);
+    ReactDOM.findDOMNode(this).addEventListener("keydown", this.handleKeydown);
+  }
+
+  componentWillUnmount() {
+    ReactDOM.findDOMNode(this).removeEventListener(
+      "keydown",
+      this.handleKeydown
+    );
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.isOpen && !prevState.isOpen) {
+      this.setState({ text: "" });
+      this.focusTextarea();
+    }
   }
 
   focusTextarea = () => {
     this.textarea.current && this.textarea.current.focus();
+  };
+
+  blurTextarea = () => {
+    this.textarea.current && this.textarea.current.blur();
   };
 
   postJournal() {
@@ -36,29 +55,23 @@ class Journal extends React.Component {
   }
 
   handleKeydown = e => {
-    if (e.code === "KeyO") {
-      // Open journal when closed
-      if (!this.state.isOpen) {
-        e.preventDefault();
-        this.handleToggleOpen();
-      }
-    }
-
-    if (e.code == "Enter" && (e.ctrlKey || e.metaKey)) {
-      // Cmd + Enter -- Submit journal
-      if (this.state.isOpen) {
+    if (this.state.isOpen) {
+      if (e.code == "Enter" && (e.ctrlKey || e.metaKey)) {
+        // Cmd + Enter -- Submit journal
         e.preventDefault();
         this.postJournal();
+      }
+    } else {
+      if (e.code === "KeyO" && (e.ctrlKey || e.metaKey)) {
+        // Cmd + O -- Open journal
+        e.preventDefault();
+        this.handleToggleOpen();
       }
     }
   };
 
   handleToggleOpen = () => {
-    const newState = !this.state.isOpen;
-    if (newState) {
-      this.focusTextarea();
-    }
-    this.setState({ isOpen: newState });
+    this.setState({ isOpen: !this.state.isOpen });
   };
 
   handleChangeText = e => {

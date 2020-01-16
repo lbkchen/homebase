@@ -102,12 +102,7 @@ class Home extends React.Component {
 
         {/* Modular Body Content */}
 
-        <section
-          className={classNames("section container body-content", {
-            "body-content--initialState": !this.state.journalToggledOnce,
-            "body-content--isShifted": this.state.journalIsOpen,
-          })}
-        >
+        <section className="section container">
           <div className="columns">
             <div className="column">
               <RedditPosts />
@@ -165,39 +160,6 @@ class Home extends React.Component {
           .greeting-date {
             font-weight: 300;
             font-size: 24px;
-          }
-
-          .body-content {
-            animation-duration: 300ms;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards;
-            animation-name: bodyContentShiftedUp;
-          }
-
-          .journal-bottomLine--initialState {
-            animation-name: none;
-          }
-
-          .body-content--isShifted {
-            animation-name: bodyContentShiftedDown;
-          }
-
-          @keyframes bodyContentShiftedUp {
-            0% {
-              transform: translateY(300px);
-            }
-            100% {
-              transform: translateY(0px);
-            }
-          }
-
-          @keyframes bodyContentShiftedDown {
-            0% {
-              transform: translateY(0px);
-            }
-            100% {
-              transform: translateY(300px);
-            }
           }
         `}</style>
       </div>
