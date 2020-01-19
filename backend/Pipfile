@@ -13,6 +13,8 @@ praw = "*"
 django-cors-headers = "*"
 pylint-django = "*"
 gunicorn = "*"
+django-heroku = "*"
+dj-database-url = "*"
 
 [requires]
 python_version = "3.7"
