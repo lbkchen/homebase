@@ -12,6 +12,7 @@ requests = "*"
 praw = "*"
 django-cors-headers = "*"
 pylint-django = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"
