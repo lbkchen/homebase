@@ -1,0 +1,1 @@
+web: sh -c 'cd backend/homebase && gunicorn wsgi.py'
