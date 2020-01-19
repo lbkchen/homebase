@@ -136,6 +136,7 @@ class Journal extends React.Component {
             autoFocus
             className="journal-textarea"
             placeholder="What's on your mind?"
+            rows={11}
             value={this.state.text}
             onChange={this.handleChangeText}
             ref={this.textarea}
@@ -155,7 +156,7 @@ class Journal extends React.Component {
 
             .journal--isOpen {
               border-radius: 5px;
-              height: 200px;
+              height: 360px;
             }
 
             .journal::after {
@@ -214,7 +215,7 @@ class Journal extends React.Component {
               resize: none;
               width: 100%;
               background-color: transparent;
-              font-size: 18px;
+              font-size: 24px;
             }
 
             @keyframes fadeOut {
