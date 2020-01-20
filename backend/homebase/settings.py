@@ -84,12 +84,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'homebase.wsgi.application'
 
+# Deploy: Activate Django-Heroku.
+# https://devcenter.heroku.com/articles/django-app-configuration
+django_heroku.settings(locals())
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
 DATABASES = {}
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+ssl_require = os.environ['ENV'] != 'development'
+locals()['DATABASES']['default'] = dj_database_url.config(
+    conn_max_age=django_heroku.MAX_CONN_AGE, ssl_require=ssl_require)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -140,8 +145,3 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-
-# Deploy: Activate Django-Heroku.
-# https://devcenter.heroku.com/articles/django-app-configuration
-django_heroku.settings(locals())
-del DATABASES['default']['OPTIONS']['sslmode']  # Hack to dev locally in sqlite
