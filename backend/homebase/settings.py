@@ -142,6 +142,8 @@ CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:3000",
     "http://localhost:4000",
     "http://127.0.0.1:4000",
+    "https://home.kenchen.io",  # Frontend webserver
+    "https://homebase.now.sh",  # Frontend webserver
 ]
 
 CORS_ALLOW_CREDENTIALS = True
