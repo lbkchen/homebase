@@ -16,6 +16,7 @@ def index(request):
 # Journal Entries
 
 
+@csrf_exempt
 def journal_entries(request):
     if request.method == "GET":
         return get_journal_entries(request)
