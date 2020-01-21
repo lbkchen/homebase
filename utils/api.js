@@ -3,8 +3,7 @@ import moment from "moment";
 
 import { getCookie } from "./cookie";
 
-// TODO: Change this
-const API_SERVER_BASE = "http://localhost:8000";
+const API_SERVER_BASE = process.env.API_URL;
 
 class API {
   static getUrl(path) {
