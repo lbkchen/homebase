@@ -5,6 +5,7 @@ import json
 
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import JournalEntry
 
@@ -34,6 +35,7 @@ def get_journal_entries(request):
     return JsonResponse(data)
 
 
+@csrf_exempt
 def add_journal_entry(request):
     """
     Add a journal entry.
