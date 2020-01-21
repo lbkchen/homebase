@@ -14,6 +14,9 @@ import os
 import environ
 import django_heroku
 import dj_database_url
+import sentry_sdk
+
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Setup environment variables
 
@@ -147,3 +150,15 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# Sentry
+# https://sentry.io/onboarding/ken-chen/get-started/
+
+sentry_sdk.init(
+    dsn="https://0092d09fe2c9441d84cd95618de38262@sentry.io/1889347",
+    integrations=[DjangoIntegration()],
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)

@@ -15,6 +15,7 @@ pylint-django = "*"
 gunicorn = "*"
 django-heroku = "*"
 dj-database-url = "*"
+sentry-sdk = "*"
 
 [requires]
 python_version = "3.7"
