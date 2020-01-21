@@ -15,8 +15,6 @@ class API {
   static postJournalEntry(text) {
     const path = "/api/journals";
     const csrfToken = getCookie("csrftoken");
-    console.log("CSRF", csrfToken);
-    console.log("Cookie", document.cookie);
     return fetch(API.getUrl(path), {
       method: "POST",
       headers: {
