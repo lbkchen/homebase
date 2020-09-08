@@ -7,10 +7,11 @@ A personal homepage
 Install python requirements from Pipfile
 
 ```
+cd backend
 pipenv install
 ```
 
-Install client side requirements with `npm`
+Install client side requirements with `npm` (check `package.json` for node version)
 
 ```
 npm install

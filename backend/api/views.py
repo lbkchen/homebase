@@ -2,6 +2,7 @@ import praw
 import environ
 import re
 import json
+import requests
 
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
@@ -12,6 +13,7 @@ from .models import JournalEntry
 
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
+
 
 # Journal Entries
 
@@ -53,6 +55,29 @@ def add_journal_entry(request):
     text = body['text']
     JournalEntry.objects.create(timestamp=timestamp, text=text)
     return JsonResponse({})
+
+
+# Anki
+
+
+def anki_request_payload(action, **params):
+    return {'action': action, 'params': params, 'version': 6}
+
+
+def get_anki_stats(request):
+    payload = anki_request_payload(
+        "getCollectionStatsHTML",
+        wholeCollection=True
+    )
+    # AnkiConnect API: https://github.com/FooSoft/anki-connect
+    # Requires a single JSON-encoded string as the data payload using a POST request
+    encoded_payload = json.dumps(payload).encode('utf-8')
+    r = requests.post(
+        "http://localhost:8765",
+        encoded_payload
+    )
+    return JsonResponse(r.json())
+
 
 # Reddit
 
