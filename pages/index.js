@@ -11,6 +11,7 @@ import {
 
 import RedditPosts from "../components/reddit";
 import Journal from "../components/journal";
+import AnkiStats from "../components/anki";
 
 import "../styles/styles.sass";
 
@@ -107,8 +108,17 @@ class Home extends React.Component {
             <div className="column">
               <RedditPosts />
             </div>
-            <div className="column">Hey</div>
             <div className="column">{this.renderNewsMenu()}</div>
+          </div>
+          <div className="columns">
+            <div className="column">
+              <div className="panel is-primary">
+                <p className="panel-heading">Anki</p>
+                <div className="anki">
+                  <AnkiStats />
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -146,6 +156,10 @@ class Home extends React.Component {
           .greeting-date {
             font-weight: 300;
             font-size: 24px;
+          }
+
+          .anki {
+            padding: 1em 24px 2em;
           }
         `}</style>
       </div>
