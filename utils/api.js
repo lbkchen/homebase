@@ -12,10 +12,10 @@ class API {
 
   // Journal Entries
 
-  static postJournalEntry(text) {
+  static async postJournalEntry(text) {
     const path = "/api/journals";
     const csrfToken = getCookie("csrftoken");
-    return fetch(API.getUrl(path), {
+    const res = await fetch(API.getUrl(path), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,14 +26,23 @@ class API {
         timestamp: moment().valueOf(),
         text: text,
       }),
-    }).then(r => r.json());
+    });
+    return res.json();
   }
 
   // Reddit
 
-  static listRedditPosts() {
+  static async listRedditPosts() {
     const path = "/api/reddit";
-    return fetch(API.getUrl(path)).then(r => r.json());
+    const res = await fetch(API.getUrl(path));
+    return res.json();
+  }
+
+  // Anki
+  static async getAnkiStats() {
+    const path = "/api/anki";
+    const res = await fetch(API.getUrl(path));
+    return res.json();
   }
 }
 
