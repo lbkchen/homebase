@@ -1,9 +1,6 @@
 {
   "name": "homebase",
   "version": "0.1.0",
-  "engines": {
-    "node": "~14.9"
-  },
   "private": true,
   "scripts": {
     "dev": "next -p 4000",
