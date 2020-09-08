@@ -15,13 +15,12 @@ const AnkiStats = (props) => {
       // Just keep first section with the summary stats
       const doc = new DOMParser().parseFromString(response.result, "text/html");
       const result = doc.evaluate(
-        "//center/*[position()<3]", // Style node and first section, 1-indexed
+        "//center/*[position()=2]", // 1-indexed in xpath
         doc,
         null,
         XPathResult.ANY_TYPE,
         null
       );
-      console.log("result", result);
       let nodes = [];
       let node = null;
       while ((node = result.iterateNext())) {
